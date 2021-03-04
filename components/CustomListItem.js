@@ -2,13 +2,17 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 
-const CustomListItem = ({ id, chatName, enterChat }) => {
+const CustomListItem = ({ id, channelName, enterChannel }) => {
   return (
-    <ListItem>
+    <ListItem
+      key={id}
+      bottomDivider
+      onPress={() => enterChannel(id, channelName)}
+    >
       <Avatar rounded source={require("../assets/images/default.png")} />
       <ListItem.Content>
         <ListItem.Title style={{ fontWeight: "600" }}>
-          My Channel
+          {channelName}
         </ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode='tail'>
           This is test subtitle mon pote ca va ou quoi, oui et toi ? moi je vais

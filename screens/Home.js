@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -13,9 +13,31 @@ import CustomListItem from "../components/CustomListItem";
 import { auth, db } from "../config/firebase";
 
 const Home = ({ navigation }) => {
+  const [channels, setChannels] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = db.collection("channels").onSnapshot((snapchot) =>
+      setChannels(
+        snapchot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
+
+    return unsubscribe;
+  }, []);
+
   const signOutUser = () => {
     auth.signOut().then(() => {
       navigation.replace("Login");
+    });
+  };
+
+  const enterChannel = (id, channelName) => {
+    navigation.navigate("Channel", {
+      id,
+      name: channelName,
     });
   };
 
@@ -37,7 +59,10 @@ const Home = ({ navigation }) => {
           <TouchableOpacity activeOpacity={0.5}>
             <AntDesign name='camerao' size={24} color='black' />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => navigation.navigate("AddChannel")}
+          >
             <SimpleLineIcons name='pencil' size={21} color='black' />
           </TouchableOpacity>
         </View>
@@ -47,8 +72,15 @@ const Home = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        <CustomListItem></CustomListItem>
+      <ScrollView style={styles.container}>
+        {channels.map(({ id, data: { name } }) => (
+          <CustomListItem
+            key={id}
+            id={id}
+            channelName={name}
+            enterChannel={enterChannel}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -62,5 +94,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: 80,
     marginRight: 20,
+  },
+  container: {
+    height: "100%",
   },
 });

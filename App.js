@@ -7,6 +7,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
+import Channel from "./screens/Channel";
+import AddChannel from "./screens/AddChannel";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +28,8 @@ export default function App() {
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Register' component={Register} />
         <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='AddChannel' component={AddChannel} />
+        <Stack.Screen name='Channel' component={Channel} />
       </Stack.Navigator>
     </NavigationContainer>
   );
