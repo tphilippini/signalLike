@@ -37,7 +37,11 @@ const AddChannel = ({ navigation }) => {
         leftIcon={<Icon name='wechat' type='antdesign' color='gray' />}
       />
 
-      <Button onPress={createChannel} title='Create new channel' />
+      <Button
+        disabled={!input}
+        onPress={createChannel}
+        title='Create new channel'
+      />
     </View>
   );
 };
